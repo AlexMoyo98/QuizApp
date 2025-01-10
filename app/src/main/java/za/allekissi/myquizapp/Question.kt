@@ -3,7 +3,7 @@ package za.allekissi.myquizapp
 data class Question (
     val id : Int,
     val question: String,
-    val image: Int,
+    val image: String,
     val optionOne: String,
     val optionTwo: String,
     val optionThree: String,

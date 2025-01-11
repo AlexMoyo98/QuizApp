@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@drawable/end"
+    tools:context=".ResultActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quiz App!"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:paddingTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:textColor="#d1e2c4"
+        />
+
+    <ImageView
+        android:id="@+id/iv_trophy"
+        android:layout_width="248dp"
+        android:layout_height="299dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Quiz Image"
+        android:src="@drawable/award"/>
+
+    <TextView
+        android:id="@+id/tv_congratulations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hey, Congratulations!"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:textColor="#d1e2c4"
+        />
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Username"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textColor="#d1e2c4"
+        />
+
+    <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Score is 0 out of 10"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textColor="#dbe8d8"
+        />
+
+    <Button
+        android:id="@+id/btn_finish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="#2f5233"
+        android:text="FINISH"
+        android:textColor="#dbe8d8"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

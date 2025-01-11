@@ -1,5 +1,6 @@
 package za.allekissi.myquizapp
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -8,7 +9,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -20,6 +20,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mQuestionsList: ArrayList<Question>? = null
     private var mSelectedOptionPosition: Int = 0
     private var isAnswerSelected: Boolean = false
+    private var mUserName : String? = null
+    private var mCorrectAnswers: Int = 0
 
     private var progressBar: ProgressBar? = null
     private var tvProgress: TextView? = null
@@ -36,6 +38,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_quiz_questions)
+
+        mUserName = intent.getStringExtra(Constants.USER_NAME)
 
         progressBar = findViewById(R.id.progressBar)
         tvProgress = findViewById(R.id.tv_progress)
@@ -59,6 +63,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setQuestion() {
         defaultOptionsView()
+        if (mCurrentPosition > mQuestionsList!!.size) return
+
         val question: Question = mQuestionsList!![mCurrentPosition - 1]
         val imageResourceName = question.image
 
@@ -142,27 +148,19 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.tv_optionOne -> {
-                tvOptionOne?.let {
-                    selectedOptionView(it, 1)
-                }
+                selectedOptionView(tvOptionOne!!, 1)
             }
 
             R.id.tv_optionTwo -> {
-                tvOptionTwo?.let {
-                    selectedOptionView(it, 2)
-                }
+                selectedOptionView(tvOptionTwo!!, 2)
             }
 
             R.id.tv_optionThree -> {
-                tvOptionThree?.let {
-                    selectedOptionView(it, 3)
-                }
+                selectedOptionView(tvOptionThree!!, 3)
             }
 
             R.id.tv_optionFour -> {
-                tvOptionFour?.let {
-                    selectedOptionView(it, 4)
-                }
+                selectedOptionView(tvOptionFour!!, 4)
             }
 
             R.id.btnSubmit -> {
@@ -174,7 +172,12 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                             setQuestion()
                         }
                         else ->{
-                            Toast.makeText(this, "You Made it to the end",Toast.LENGTH_LONG).show()
+                            val intent = Intent(this, ResultActivity::class.java)
+                            intent.putExtra(Constants.USER_NAME,mUserName)
+                            intent.putExtra(Constants.CORRECT_ANSWERS, mCorrectAnswers)
+                            intent.putExtra(Constants.TOTAL_QUESTIONS,mQuestionsList?.size)
+                            startActivity(intent)
+                            finish()
                         }
                     }
                 }
@@ -182,6 +185,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                     val question = mQuestionsList?.get(mCurrentPosition - 1)
                     if (question!!.correctAnswer != mSelectedOptionPosition) {
                         answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
+                    } else {
+                        mCorrectAnswers++
                     }
                     answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
 

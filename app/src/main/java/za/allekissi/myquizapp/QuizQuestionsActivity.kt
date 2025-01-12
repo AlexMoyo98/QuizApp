@@ -19,8 +19,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mCurrentPosition: Int = 1
     private var mQuestionsList: ArrayList<Question>? = null
     private var mSelectedOptionPosition: Int = 0
-    private var isAnswerSelected: Boolean = false
-    private var mUserName : String? = null
+    private var mUserName: String? = null
     private var mCorrectAnswers: Int = 0
 
     private var progressBar: ProgressBar? = null
@@ -51,12 +50,17 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionFour = findViewById(R.id.tv_optionFour)
         btnSubmit = findViewById(R.id.btnSubmit)
 
-        tvOptionOne?.setOnClickListener(this)
-        tvOptionTwo?.setOnClickListener(this)
-        tvOptionThree?.setOnClickListener(this)
-        tvOptionFour?.setOnClickListener(this)
-        btnSubmit?.setOnClickListener(this)
+        val options = ArrayList<TextView>()
+        tvOptionOne?.let { options.add(it) }
+        tvOptionTwo?.let { options.add(it) }
+        tvOptionThree?.let { options.add(it) }
+        tvOptionFour?.let { options.add(it) }
 
+        for (option in options) {
+            option.setOnClickListener(this)
+        }
+
+        btnSubmit?.setOnClickListener(this)
         mQuestionsList = Constants.getQuestions()
         setQuestion()
     }
@@ -121,27 +125,24 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun selectedOptionView(tv: TextView, selectedOptionNum: Int) {
-        if (!isAnswerSelected) { // Check if an answer is already selected
-            defaultOptionsView()
+        defaultOptionsView()
 
-            mSelectedOptionPosition = selectedOptionNum
+        mSelectedOptionPosition = selectedOptionNum
 
-            val question = mQuestionsList?.get(mCurrentPosition - 1)
-            val isCorrect = question?.correctAnswer == selectedOptionNum
+        val question = mQuestionsList?.get(mCurrentPosition - 1)
+        val isCorrect = question?.correctAnswer == selectedOptionNum
 
-            tv.setTextColor(Color.parseColor("#000000"))
-            tv.setTypeface(tv.typeface, Typeface.BOLD)
-            tv.background = ContextCompat.getDrawable(
-                this,
-                if (isCorrect) R.drawable.correct_option_border_bg else R.drawable.wrong_option_border_bg
-            )
+        tv.setTextColor(Color.parseColor("#000000"))
+        tv.setTypeface(tv.typeface, Typeface.BOLD)
+        tv.background = ContextCompat.getDrawable(
+            this,
+            if (isCorrect) R.drawable.correct_option_border_bg else R.drawable.wrong_option_border_bg
+        )
 
-            if (!isCorrect) {
-                if (question != null) {
-                    answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
-                }
+        if (!isCorrect) {
+            if (question != null) {
+                answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
             }
-            isAnswerSelected = true
         }
     }
 
@@ -167,21 +168,21 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                 if (mSelectedOptionPosition == 0) {
                     mCurrentPosition++
 
-                    when{
-                        mCurrentPosition <= mQuestionsList!!.size ->{
+                    when {
+                        mCurrentPosition <= mQuestionsList!!.size -> {
                             setQuestion()
                         }
-                        else ->{
+
+                        else -> {
                             val intent = Intent(this, ResultActivity::class.java)
-                            intent.putExtra(Constants.USER_NAME,mUserName)
+                            intent.putExtra(Constants.USER_NAME, mUserName)
                             intent.putExtra(Constants.CORRECT_ANSWERS, mCorrectAnswers)
-                            intent.putExtra(Constants.TOTAL_QUESTIONS,mQuestionsList?.size)
+                            intent.putExtra(Constants.TOTAL_QUESTIONS, mQuestionsList?.size)
                             startActivity(intent)
                             finish()
                         }
                     }
-                }
-                else {
+                } else {
                     val question = mQuestionsList?.get(mCurrentPosition - 1)
                     if (question!!.correctAnswer != mSelectedOptionPosition) {
                         answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
